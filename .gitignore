@@ -1,0 +1,7 @@
+result/
+dump/
+pointnet/log/
+*.npz
+*_evaluate.txt
+*.jpg
+*.json
