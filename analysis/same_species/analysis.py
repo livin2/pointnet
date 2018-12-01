@@ -6,6 +6,9 @@ import json
 import argparse
 import codecs
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PAR_DIR  = os.path.dirname(os.path.dirname(BASE_DIR))
+PICS_DIR = os.path.join(PAR_DIR,'result/final')
+RLG_DIR = os.path.join(PAR_DIR,'result/rot_log')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--obj', default='airplane')
@@ -38,6 +41,8 @@ def cosine_distance(matrix1, matrix2):
 
 #根据余弦相似度分类
 def category_by_avg_similarity(obj_name,sim):
+    if sim>=1:
+        raise Exception('expect sim <1')
     Tnet = dict(np.load('%s.npz'%(obj_name)))
     categ = []
     categ_sim = []
@@ -60,8 +65,8 @@ def category_by_avg_similarity(obj_name,sim):
     # print(json.dumps(categ, cls=NumpyEncoder))
     return categ
 
-#根据分类移动图片文件(需要把result下的图片文件夹复制过来)
-def mvpic(id):
+#根据分类移动图片文件(需要把result下的图片文件夹到当前目录下)
+def mvpic(id,pic_dir,aim_dir):
     filename1 = NAME_STR1 % (id)
     filename1 = os.path.join(pic_dir, filename1)
     if os.path.isfile(filename1):
@@ -72,19 +77,36 @@ def mvpic(id):
     if os.path.isfile(filename2):
         shutil.move(filename2, aim_dir)
 
-if __name__=='__main__':
-    categ = category_by_avg_similarity(OBJ_NAME,FLAGS.sim)
+#根据分类复制图片文件(需要把result下的图片文件夹复制过来)
+def cppic(id,pic_dir,aim_dir):
+    filename1 = NAME_STR1 % (id)
+    filename1 = os.path.join(pic_dir, filename1)
+    if os.path.isfile(filename1):
+        shutil.copy(filename1, aim_dir)
 
+    filename2 = NAME_STR2 % (id)
+    filename2 = os.path.join(pic_dir, filename2)
+    if os.path.isfile(filename2):
+        shutil.copy(filename2, aim_dir)
+
+if __name__=='__main__':
+    obj_file = os.path.join(RLG_DIR,OBJ_NAME)
+    categ = category_by_avg_similarity(obj_file,FLAGS.sim)
     print (len(categ))
 
     ctcnt = 0
-    pic_dir = os.path.join(BASE_DIR, OBJ_NAME)
+    pic_dir = os.path.join(PICS_DIR, OBJ_NAME)
+
+    obj_dir = os.path.join(BASE_DIR, OBJ_NAME)
+    if os.path.exists(obj_dir): shutil.rmtree(obj_dir)
+    os.mkdir(obj_dir)
+
     for ct in categ:
-        aim_dir = os.path.join(pic_dir, ctcnt.__str__())
+        aim_dir = os.path.join(obj_dir, ctcnt.__str__())
         if not os.path.exists(aim_dir): os.mkdir(aim_dir)
 
         #输出json格式的categ
-        json_file = "file.json"
+        json_file = "%d.json"%(ctcnt)
         json_file = os.path.join(aim_dir, json_file)
         # print (json_file)
         json.dump(categ[ctcnt], codecs.open(json_file, 'w', encoding='utf-8'), sort_keys=True, indent=4,cls=NumpyEncoder)
@@ -93,5 +115,6 @@ if __name__=='__main__':
 
         #根据分类移动图片文件
         for id_s in ct:
-            mvpic(id_s[0])
+            cppic(id_s[0],pic_dir,aim_dir)
             # print (filename)
+    # print (PAR_DIR)

@@ -1,4 +1,4 @@
-analysis.py 需要2个文件(可以从result文件夹中获得):
+analysis.py 依赖2个文件(从result文件夹中获得):
 ​	'objname'.npz --包含用于旋转对应图像的3X3矩阵数据
 ​	'objname'文件夹 --包含所有旋转前后的数据
 
@@ -6,9 +6,7 @@ analysis.py 接收两个参数:
 ​	--obj, default='airplane'	--指定物体名字
 ​	--sim,type=float, default=0.9	--分类3x3矩阵时会计算各向量余弦相似度的平均值，低于sim的分为两个类别
 
-analysis.py执行过后'objname'文件夹下的图片会被移动分类 并生成一个json文件，
-
-！！注意：分类后再次执行不会重新移动分类图片，但会替换已有json
+analysis.py执行过后'objname'文件夹下的图片会被复制到本目录对应文件夹下分类 并生成一个json文件
 
 json文件格式如下
 

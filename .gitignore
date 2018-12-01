@@ -5,3 +5,5 @@ pointnet/log/
 *_evaluate.txt
 *.jpg
 *.json
+.idea/
+*.pyc
