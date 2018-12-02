@@ -60,15 +60,20 @@ def select_hgihsim3X3(obj1,obj2,sim):
                 selected.append([{'sim':avg_similarity,'%s'%OBJ1:Tnet1[key1],'%s'%OBJ2:Tnet2[key2]}])
     return len(Tnet1),len(Tnet2),selected
 
+def eval_diff(obj1n,obj2n,sim,SAVE_DIR):
+    obj1 = os.path.join(RLG_DIR, obj1n)
+    obj2 = os.path.join(RLG_DIR, obj2n)
+    num1, num2, selected = select_hgihsim3X3(obj1, obj2, FLAGS.sim)
+    print ('similar 3X3 NUM:' + len(selected).__str__())
+
+    json_file = "%d%%%d-%s-%s-%f.json" % (len(selected), num1 * num2, obj1n, obj2n, sim)
+    print (json_file)
+    json_file = os.path.join(SAVE_DIR, json_file)
+    json.dump(selected, codecs.open(json_file, 'w', encoding='utf-8'), sort_keys=True, indent=4, cls=NumpyEncoder)
+
 
 if __name__=='__main__':
-    obj1 = os.path.join(RLG_DIR,OBJ1)
-    obj2 = os.path.join(RLG_DIR, OBJ2)
-    num1,num2,selected = select_hgihsim3X3(obj1,obj2,FLAGS.sim)
+    eval_diff(OBJ1,OBJ2,FLAGS.sim,BASE_DIR)
 
-    print ('similar 3X3 NUM:'+len(selected).__str__())
-    json_file = "%d%%%d-%s-%s-%f.json" % (len(selected),num1*num2,OBJ1,OBJ2,FLAGS.sim)
-    print (json_file)
-    json_file = os.path.join(BASE_DIR, json_file)
-    json.dump(selected, codecs.open(json_file, 'w', encoding='utf-8'), sort_keys=True, indent=4,cls=NumpyEncoder)
+
 
