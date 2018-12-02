@@ -5,6 +5,8 @@ import shutil
 import json
 import argparse
 import codecs
+import glob
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PAR_DIR  = os.path.dirname(os.path.dirname(BASE_DIR))
 PICS_DIR = os.path.join(PAR_DIR,'result/final')
@@ -16,8 +18,8 @@ parser.add_argument('--sim',type=float, default=0.9)
 FLAGS = parser.parse_args()
 
 OBJ_NAME = FLAGS.obj
-NAME_STR1 = '%s_beforeR_label_'+OBJ_NAME+'_pred_'+OBJ_NAME+'.jpg'
-NAME_STR2 = '%s_TnetR_label_'+OBJ_NAME+'_pred_'+OBJ_NAME+'.jpg'
+NAME_STR1 = '%s_beforeR_label_'+OBJ_NAME+'_pred_*.jpg'
+NAME_STR2 = '%s_TnetR_label_'+OBJ_NAME+'_pred_*.jpg'
 
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -81,27 +83,41 @@ def mvpic(id,pic_dir,aim_dir):
 def cppic(id,pic_dir,aim_dir):
     filename1 = NAME_STR1 % (id)
     filename1 = os.path.join(pic_dir, filename1)
+
+    filename1 = glob.glob(filename1)[0]
     if os.path.isfile(filename1):
         shutil.copy(filename1, aim_dir)
 
     filename2 = NAME_STR2 % (id)
     filename2 = os.path.join(pic_dir, filename2)
+
+    filename2 = glob.glob(filename2)[0]
     if os.path.isfile(filename2):
         shutil.copy(filename2, aim_dir)
 
 if __name__=='__main__':
-    obj_file = os.path.join(RLG_DIR,OBJ_NAME)
-    categ = category_by_avg_similarity(obj_file,FLAGS.sim)
-    print (len(categ))
-
-    ctcnt = 0
     pic_dir = os.path.join(PICS_DIR, OBJ_NAME)
 
     obj_dir = os.path.join(BASE_DIR, OBJ_NAME)
     if os.path.exists(obj_dir): shutil.rmtree(obj_dir)
     os.mkdir(obj_dir)
 
+    log_fout = open(os.path.join(obj_dir, 'log.txt'), 'w')
+    log_fout.write(str(FLAGS) + '\n')
+
+    obj_file = os.path.join(RLG_DIR,OBJ_NAME)
+    categ = category_by_avg_similarity(obj_file,FLAGS.sim)
+
+    log_fout.write('category:'+len(categ).__str__()+'\n')
+    log_fout.flush()
+    print ('category:'+len(categ).__str__())
+
+    ctcnt = 0
     for ct in categ:
+        log_fout.write(ctcnt.__str__()+': '+len(ct).__str__() + '\n')
+        log_fout.flush()
+        print (ctcnt.__str__()+': '+len(ct).__str__())
+
         aim_dir = os.path.join(obj_dir, ctcnt.__str__())
         if not os.path.exists(aim_dir): os.mkdir(aim_dir)
 

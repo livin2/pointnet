@@ -7,3 +7,5 @@ pointnet/log/
 *.json
 .idea/
 *.pyc
+analysis/same_species/*/
+analysis/diff_species/*/
