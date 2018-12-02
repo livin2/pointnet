@@ -13,7 +13,6 @@ RLG_DIR = os.path.join(PAR_DIR, 'result/rot_log')
 parser = argparse.ArgumentParser()
 parser.add_argument('--obj1', default='flower_pot')
 parser.add_argument('--obj2', default='plant')
-parser.add_argument('--cppic', action='store_true')
 parser.add_argument('--sim', type=float, default=0.99)
 FLAGS = parser.parse_args()
 

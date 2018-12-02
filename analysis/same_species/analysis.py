@@ -15,6 +15,7 @@ RLG_DIR = os.path.join(PAR_DIR,'result/rot_log')
 parser = argparse.ArgumentParser()
 parser.add_argument('--obj', default='airplane')
 parser.add_argument('--sim',type=float, default=0.9)
+parser.add_argument('--cppic', action='store_true')
 FLAGS = parser.parse_args()
 
 OBJ_NAME = FLAGS.obj
@@ -62,7 +63,7 @@ def category_by_avg_similarity(obj_name,sim):
                     break
             if (flag):
                 categ.append([[key,1.0,Tnet[key]]])
-            print (avg_similarity)
+            # print (avg_similarity)
 
     # print(json.dumps(categ, cls=NumpyEncoder))
     return categ
@@ -130,7 +131,8 @@ if __name__=='__main__':
         ctcnt += 1
 
         #根据分类移动图片文件
-        for id_s in ct:
-            cppic(id_s[0],pic_dir,aim_dir)
-            # print (filename)
+        if FLAGS.cppic:
+            for id_s in ct:
+                cppic(id_s[0],pic_dir,aim_dir)
+                # print (filename)
     # print (PAR_DIR)

@@ -57,25 +57,25 @@ if __name__=='__main__':
                 ]
             ])
 
-    print ((np.multiply(mt1[0], mt1[0])))
-    m1s = np.multiply(mt1[0], mt1[0]).sum()
-    print (m1s)
-    m1n = np.sqrt(m1s)
-    print (m1n)
-    print ('\n')
-
-    print ((np.multiply(mt2[0], mt2[0])))
-    m2s = np.multiply(mt2[0], mt2[0]).sum()
-    print (m2s)
-    m2n = np.sqrt(m2s)
-    print (m2n)
-    print ('\n')
-
-    mdot = np.dot(mt1[0], mt2[0].transpose())
-    print (mdot)
-
-    ccdd = np.divide(mdot, np.multiply(m1n,m2n))
-    print (ccdd)
+    # print ((np.multiply(mt1[0], mt1[0])))
+    # m1s = np.multiply(mt1[0], mt1[0]).sum()
+    # print (m1s)
+    # m1n = np.sqrt(m1s)
+    # print (m1n)
+    # print ('\n')
+    #
+    # print ((np.multiply(mt2[0], mt2[0])))
+    # m2s = np.multiply(mt2[0], mt2[0]).sum()
+    # print (m2s)
+    # m2n = np.sqrt(m2s)
+    # print (m2n)
+    # print ('\n')
+    #
+    # mdot = np.dot(mt1[0], mt2[0].transpose())
+    # print (mdot)
+    #
+    # ccdd = np.divide(mdot, np.multiply(m1n,m2n))
+    # print (ccdd)
 
 
     cd = cosine_distance(mt1,mt2)
