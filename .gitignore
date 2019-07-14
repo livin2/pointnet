@@ -1,0 +1,11 @@
+result/
+dump/
+pointnet/log/
+*.npz
+*_evaluate.txt
+*.jpg
+*.json
+.idea/
+*.pyc
+analysis/same_species/*/
+analysis/diff_species/*/
