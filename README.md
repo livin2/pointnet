@@ -1,4 +1,5 @@
 # PointNet分析验证实验
+![MIT](https://img.shields.io/badge/license-MIT-green)
 
 比较不同数据下input transform所用的3x3矩阵之间的相似度，将输出按照相似的旋转矩阵分类。
 
